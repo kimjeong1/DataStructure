@@ -1,3 +1,4 @@
+//실습 예제코드
 #include <iostream>
 #include <vector>
 
@@ -19,17 +20,13 @@ public:
 		root = new node(data, NULL);
 		nodeList.push_back(root);
 	}
-	int find(int data, vector<node*>& List) {
-		for (int i = 0; i < List.size(); i++) {
-			if (List[i]->data == data) return i;
-			return -1;
-		}
-	}
-	void insertNode(int parData, int data) {
+	void insertNode(int pardata, int data) {
 		if (find(data, nodeList) != -1) return;
 
-		int idx = find(parData, nodeList);
-		if (idx == -1) return;
+		int idx = find(pardata, nodeList);
+		if (idx == -1) {
+			return;
+		}
 
 		node* parNode = nodeList[idx];
 		node* newNode = new node(data, parNode);
@@ -52,7 +49,6 @@ public:
 		vector<node*>& child = parNode->childList;
 		child.erase(child.begin() + find(data, child));
 		nodeList.erase(nodeList.begin() + idx);
-		delete delNode;
 	}
 	void printParent(int data) {
 		int idx = find(data, nodeList);
@@ -73,15 +69,20 @@ public:
 		}
 		cout << "\n";
 	}
+
 private:
 	node* root;
 	vector<node*> nodeList;
-	int find(int data, vector<node*>& List);
-
+	int find(int data, vector<node*>& List) {
+		for (int i = 0; i < List.size(); i++) {
+			if (List[i]->data == data)
+				return i;
+		}
+		return -1;
+	}
 };
 
 int main() {
-
 
 	return 0;
 }
