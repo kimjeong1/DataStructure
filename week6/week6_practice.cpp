@@ -49,6 +49,7 @@ public:
 		vector<node*>& child = parNode->childList;
 		child.erase(child.begin() + find(data, child));
 		nodeList.erase(nodeList.begin() + idx);
+		delete delNode;
 	}
 	void printParent(int data) {
 		int idx = find(data, nodeList);
