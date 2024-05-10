@@ -46,7 +46,7 @@ private:
 			else child = right;
 		}
 
-		if (!C(arr[i], arr[child)) {
+		if (!C(arr[i], arr[child])) {
 			swap(child, i);
 			downheap(child);
 		}
