@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <string>
 
 using namespace std;
@@ -17,33 +16,33 @@ class BinarySearchTree {
 private:
     TreeNode* root;
 
-    void insert(TreeNode*& node, int key, TreeNode* parent, int& comparisons) {
-        if (node == NULL) {
-            node = new TreeNode(key);
-            node->parent = parent;
-            return;
-        }
+    TreeNode* insert(TreeNode* node, int key, TreeNode* parent, int& comparisons) {
         comparisons++;
-        if (key < node->key) {
-            insert(node->left, key, node, comparisons);
-        } else {
-            insert(node->right, key, node, comparisons);
+        if (node == NULL) {
+            TreeNode* newNode = new TreeNode(key);
+            newNode->parent = parent;
+            return newNode;
         }
+        if (key < node->key) {
+            node->left = insert(node->left, key, node, comparisons);
+        } else {
+            node->right = insert(node->right, key, node, comparisons);
+        }
+        return node;
     }
 
-    int search(TreeNode* node, int key) {
-        int comparisons = 0;
-        while (node != NULL) {
-            comparisons++;
-            if (key == node->key) {
-                return comparisons;
-            } else if (key < node->key) {
-                node = node->left;
-            } else {
-                node = node->right;
-            }
+    int search(TreeNode* node, int key, int& comparisons) {
+        if (node == NULL) {
+            return comparisons;
         }
-        return comparisons;
+        comparisons++;
+        if (key == node->key) {
+            return comparisons;
+        } else if (key < node->key) {
+            return search(node->left, key, comparisons);
+        } else {
+            return search(node->right, key, comparisons);
+        }
     }
 
     TreeNode* searchNode(TreeNode* node, int key) {
@@ -62,13 +61,14 @@ public:
 
     int insert(int key) {
         int comparisons = 0;
-        insert(root, key, NULL, comparisons);
+        root = insert(root, key, NULL, comparisons);
         return comparisons;
     }
 
     int search(int key) {
         if (root == NULL) return -1; // empty
-        return search(root, key);
+        int comparisons = 0;
+        return search(root, key, comparisons);
     }
 
     int getParent(int key) {
@@ -102,7 +102,7 @@ int main() {
             if (command == "insert") {
                 int x;
                 cin >> x;
-                cout << bst.insert(x) << endl;
+                cout << bst.insert(x)-1 << endl;
             } else if (command == "search") {
                 int x;
                 cin >> x;
